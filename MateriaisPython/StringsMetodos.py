@@ -1,3 +1,5 @@
+#Métodos úteis 
+
 nome = "AmaNDa"
 
 print(nome.upper())
