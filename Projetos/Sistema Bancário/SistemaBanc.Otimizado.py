@@ -1,4 +1,4 @@
-import textwrap
+import textwrap #biblioteca utilizada para manipular textos (ela ajusta a identação do menu)
 
 
 def menu():
@@ -12,10 +12,11 @@ def menu():
     [nvu]\tNovo usuário
     [e]\tSair
     => """
-    return input(textwrap.dedent(menu))
+    # O \t insere um espaço de tabulação (tecla tab) horizontal no texto. 
+    return input(textwrap.dedent(menu)) #Remove a indentação e exibe o menu formatado
 
 
-def depositar(saldo, valor, extrato, /):
+def depositar(saldo, valor, extrato, /): #A Barra obriga os primeiros argumentos a serem apenas posicionais
     if valor > 0:
         saldo += valor
         extrato += f"Depósito:\tR$ {valor:.2f}\n"
@@ -27,6 +28,7 @@ def depositar(saldo, valor, extrato, /):
 
 
 def sacar(*, saldo, valor, extrato, limite, numero_saques, limite_saques):
+    # O # Asterisco obriga os parâmetros a serem passados nomeados
     excedeu_saldo = valor > saldo
     excedeu_limite = valor > limite
     excedeu_saques = numero_saques >= limite_saques
@@ -54,8 +56,12 @@ def sacar(*, saldo, valor, extrato, limite, numero_saques, limite_saques):
 
 def exibir_extrato(saldo, /, *, extrato):
     print("\n================ Extrato ================")
+    # Caso não houver movimentações, informa o que está escrito abaixo.
     print("Não foram realizadas movimentações." if not extrato else extrato)
+    #Exibe o saldo atual.
     print(f"\nSaldo:\t\tR$ {saldo:.2f}")
+    # O f-string é uma maneira de inserir variáveis dentro de uma String de forma fácil e legível.
+    #:.2f formata o número para ter duas casas decimais, no estilo de valor monetário (exemplo: 100.00).
     print("==========================================")
 
 
@@ -71,6 +77,9 @@ def criar_usuario(usuarios):
     data_nascimento = input("Informe a data de nascimento (dd-mm-aaaa): ")
     endereco = input("Informe o endereço: ")
 
+    # Adiciona um novo usuário à lista de usuários.
+    # Cada usuário é representado como um dicionário contendo, nome, data de nascimento, CPF e endereço.
+    # A função append() insere esse dicionário no final da lista 'usuarios'.
     usuarios.append({"nome": nome, "data_nascimento": data_nascimento, "cpf": cpf, "endereco": endereco})
 
     print("=== Usuário cadastrado com sucesso! ===")
@@ -117,12 +126,12 @@ def main():
     while True:
         opcao = menu()
 
-        if opcao == "d":
+        if opcao == "1":
             valor = float(input("Informe o valor do depósito: "))
 
             saldo, extrato = depositar(saldo, valor, extrato)
 
-        elif opcao == "s":
+        elif opcao == "2":
             valor = float(input("Informe o valor do saque: "))
 
             saldo, extrato = sacar(
@@ -134,13 +143,13 @@ def main():
                 limite_saques=LIMITE_SAQUES,
             )
 
-        elif opcao == "e":
+        elif opcao == "3":
             exibir_extrato(saldo, extrato=extrato)
 
-        elif opcao == "nu":
+        elif opcao == "nvu":
             criar_usuario(usuarios)
 
-        elif opcao == "nc":
+        elif opcao == "nvc":
             numero_conta = len(contas) + 1
             conta = criar_conta(AGENCIA, numero_conta, usuarios)
 
@@ -150,8 +159,8 @@ def main():
         elif opcao == "lc":
             listar_contas(contas)
 
-        elif opcao == "q":
-            break
+        elif opcao == "e":
+            break # O break encerra o loop e sai do programa.
 
         else:
             print("Operação inválida, por favor selecione novamente a operação desejada.")
